@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/* CanteenQL design tokens (from the "Canteen SQL Visualizer UI" canvas) */
+@theme {
+  --color-bg: #eef2f5;
+  --color-ink: #18233a;
+  --color-muted: #4a5872;
+  --color-sub: #33415a;
+  --color-line: #c9d4de;
+  --color-line-strong: #b9c6d2;
+  --color-line-soft: #d5dee6;
+  --color-track: #e4ebf0;
+
+  --color-leaf: #2c6e57;
+  --color-leaf-dark: #1f5341;
+  --color-leaf-soft: #d6ebe2;
+  --color-leaf-kw: #8fd4b6;
+
+  --color-panel: #18233a;
+  --color-panel-line: #2b3a57;
+  --color-panel-btn: #3a4b6b;
+  --color-panel-text: #e8edf3;
+  --color-panel-sub: #c3ccd9;
+  --color-panel-hi: #2a3a5c;
+  --color-gutter: #7d8ba2;
+
+  --color-ketchup: #b42335;
+  --color-ketchup-dark: #8c1a29;
+  --color-ketchup-kw: #ff8a96;
+
+  --color-mustard: #f5cb3c;
+  --color-mustard-soft: #fbe7a1;
+  --color-mustard-ink: #5c4600;
+
+  --color-plum: #6b3f8c;
+  --color-plum-soft: #eadff2;
+  --color-plum-ink: #4e2a6b;
+  --color-plum-kw: #d2b4ea;
+
+  --color-ocean: #2f4f8f;
+  --color-ocean-soft: #dce6f5;
+  --color-ocean-ink: #233e72;
+  --color-ocean-kw: #a9c2ee;
+
+  --color-ticket-off: #f3f5f7;
+  --color-ticket-off-text: #5e6b80;
+
+  --font-head: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-sans: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --font-mono: "Martian Mono", ui-monospace, monospace;
+}
+
+/* Base styles live in a layer so Tailwind utilities can override them. */
+@layer base {
+  :root { color-scheme: light; }
+  html, body { background: var(--color-bg); color: var(--color-ink); }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--color-leaf); }
+  a:hover { color: var(--color-leaf-dark); }
+  :focus-visible { outline: 3px solid var(--color-ocean); outline-offset: 3px; }
+}
+
+.h-display {
+  font-family: var(--font-head);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+}
+.h-section {
+  font-family: var(--font-head);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+code.inline {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  background: var(--color-track);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+/* Rubber stamp on a removed ticket */
+@keyframes cq-stamp {
+  0% { opacity: 0; transform: rotate(-8deg) scale(1.7); }
+  70% { opacity: 1; transform: rotate(-8deg) scale(0.94); }
+  100% { opacity: 1; transform: rotate(-8deg) scale(1); }
+}
+@keyframes cq-in {
+  0% { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: none; }
+}
+.stamp {
+  position: absolute;
+  right: 14px;
+  top: 40px;
+  padding: 4px 12px;
+  border: 3px solid var(--color-ketchup);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--color-ketchup);
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transform: rotate(-8deg);
+  animation: cq-stamp 320ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+.ticket-in { animation: cq-in 240ms ease-out both; }
+
+/* SQL editor (CodeMirror) */
+.cm-editor { background: var(--color-panel); }
+.cm-editor.cm-focused { outline: none; }
+.cm-scroller { font-family: var(--font-mono) !important; }
+.kw-green { color: var(--color-leaf-kw); font-weight: 600; }
+.kw-blue { color: var(--color-ocean-kw); font-weight: 600; }
+.kw-yellow { color: var(--color-mustard); font-weight: 600; }
+.kw-plum { color: var(--color-plum-kw); font-weight: 600; }
+.cm-err { text-decoration: underline wavy var(--color-ketchup-kw); text-underline-offset: 6px; }
+
+/* GROUP BY bands: one colour per group */
+.g0 { --g: #2f4f8f; } .g1 { --g: #c98500; } .g2 { --g: #6b3f8c; } .g3 { --g: #2c6e57; }
+.g4 { --g: #b42335; } .g5 { --g: #1c7ed6; } .g6 { --g: #8a6a00; } .g7 { --g: #d55181; }
+.grouped { box-shadow: inset 5px 0 0 var(--g); background: color-mix(in srgb, var(--g) 10%, white); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
